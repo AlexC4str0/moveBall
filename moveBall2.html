@@ -1,0 +1,90 @@
+
+<body >
+<div id="ballBox" style="
+    z-index: 8;
+    background-color: rgb(0,25,150);
+    position: relative;
+    border-style: solid;
+    border-color: #000;
+    border-width: 4px;
+    width: 600px;
+    height: 300px;
+    margin: auto;">
+    <div id="ball_0" style="
+        z-index:5;
+        left:0px;
+        position: relative;
+        top:0px;
+        width:50px;
+        height:50px;
+        border-radius:50%;
+        background:green;">
+    </div>
+    </div>
+</body>
+
+<script>
+
+var velocityX = 4;
+var velocityY = 4;
+var positionX = 0;
+var positionY = 0;
+
+
+var ball = document.getElementById("ball_0"); //make the ball accessible from JS
+var ballBox = document.getElementById('ballBox');//make the box accesible from JS
+
+var yMax = parseInt(ballBox.style.height,10) - 50; //set the Maximum height the ball can travel
+var xMax = parseInt(ballBox.style.width,10) - 50;  //set the Maximum width the ball can travel
+
+
+function addBall(){
+  var newBall = document.createElement("div");
+  newBall.id = "ball_bounce";//set a random color on the location of bounce to create a new ball
+  newBall.style = "z-index:5; position: absolute; width:50px; height:50px; border-radius:50%;";
+  newBall.style.left = positionX;
+  newBall.style.top = positionY;
+  changeColor(newBall);
+  document.getElementById("ballBox").appendChild(newBall); //add the ball to the box
+  var newBall = document.getElementById("ball_bounce"); //make the ball accessible from JS
+}
+
+function changeColor(baller){//change the color of the ball using random integers on each RGB value
+  let randomInt1 = Math.floor(Math.random() * 101);
+  let randomInt2 = Math.floor(Math.random() * 101);
+  let randomInt3 = Math.floor(Math.random() * 101);
+  baller.style.background = "rgb("+randomInt1+","+randomInt2+","+randomInt3+")";
+}
+
+function moveBall(){
+  if(positionX>xMax){//if the position of the ball is greater than my max position, reverse the velocity. - Along the X-axis
+    velocityX = velocityX * -1;
+    changeColor(ball);
+    addBall();
+  }
+  else if(positionX <0){//else if the ball position is less than the minimum position of the box, reverse the velocity. Along the X-axis
+    velocityX = velocityX *-1;
+    changeColor(ball);
+    addBall();
+  }
+  if(positionY>yMax){//if the position of the ball is greater than my max position, reverse the velocity. Along the Y-axis
+    velocityY = velocityY * -1;
+    changeColor(ball);
+    addBall();
+  }
+  else if(positionY <0){//else if the ball position is less than the minimum position of the box, reverse the velocity. Along the Y-axis
+    velocityY = velocityY *-1;
+    changeColor(ball);
+    addBall();
+  }
+
+  positionX = positionX + velocityX; //Every time the page updates with the interval, add the velocity to the position. Which makes the ball move the amount of the velocity. On X-axis
+  ball.style.left = positionX + "px";//Print the new position on the page
+
+  positionY = positionY + velocityY;//Every time the page updates with the interval, add the velocity to the position. Which makes the ball move the amount of the velocity. On Y-axis
+  ball.style.top = positionY + "px";
+  
+}
+
+setInterval(moveBall,10);
+</script>
